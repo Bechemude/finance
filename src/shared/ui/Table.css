@@ -1,0 +1,24 @@
+.header {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    cursor: pointer;
+    justify-items: start;
+    color: lightgray;
+    font-size: 12px;
+    padding: 10px 0;
+}
+
+.tbody {
+    height: 30vh;
+    overflow: auto;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    cursor: pointer;
+    justify-items: start;
+    padding: 10px 0;
+}

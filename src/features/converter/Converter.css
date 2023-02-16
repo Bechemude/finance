@@ -1,0 +1,48 @@
+.converter {
+    display: grid;
+    gap: 10px;
+}
+.converter > div {
+    display: flex;
+}
+/* .converter > di { */
+/*     display: flex; */
+/* } */
+
+.total {
+    color: lightgray;
+    font-size: 12px;
+    text-align: left;
+    margin-top: 10px;
+}
+.button-swap {
+    margin: 0 10px;
+}
+.value {
+    font-size: 40px;
+    font-style: bold;
+}
+.total-value {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+input {
+    padding: 13px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    margin-top: 10px;
+}
+
+input, select, button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+

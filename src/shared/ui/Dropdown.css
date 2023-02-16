@@ -1,0 +1,6 @@
+select {
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}

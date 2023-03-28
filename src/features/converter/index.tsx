@@ -1,53 +1,52 @@
 import { useEffect, useState } from "react";
-import { Dropdown } from "../../shared/ui";
+import { Dropdown } from "shared/ui";
 import "./Converter.css";
-import { currencyDict } from "../../shared/ui/dictionary";
-import { useGetCurrenciesQuery } from "../../shared/api";
+import { currencyDict } from "shared/ui/dictionary";
+import { useGetCurrenciesQuery } from "shared/api";
+import { ICurrencies } from "shared/types"
 
-interface IConverterProps {
-  data: { [key: string]: number };
-}
-
-export default function Converter({ data }: IConverterProps) {
+export default function Converter({ data }: ICurrencies) {
   const currenciesList = Object.keys(data);
 
   const [inputValue, setInputValue] = useState(1);
-  const [selectedCurrencyFrom, setSelectedCurrencyFrom] =
+  const [currencyFrom, setCurrencyFrom] =
     useState<keyof typeof currencyDict>("RUB");
-  const [selectedCurrencyTo, setSelectedCurrencyTo] =
+  const [currencyTo, setCurrencyTo] =
     useState<keyof typeof currencyDict>("USD");
   const [outputValue, setOutputValue] = useState(0);
+  // TODO: add geo for currencyFrom
 
   const { data: currencies, isSuccess, isLoading } = useGetCurrenciesQuery({
-    currencies: selectedCurrencyTo,
-    base_currency: selectedCurrencyFrom,
+    currencies: currencyTo,
+    base_currency: currencyFrom,
   });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(Number(event.target.value));
   };
 
-  const handleSelectChangeFrom = (
+  const handleChangeCurrencyFrom = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setSelectedCurrencyFrom(
+    setCurrencyFrom(
       event.target.value as keyof typeof currencyDict
     );
   };
 
-  const handleSelectChangeTo = (
+  const handleChangeCurrencyTo = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setSelectedCurrencyTo(event.target.value as keyof typeof currencyDict);
+    setCurrencyTo(event.target.value as keyof typeof currencyDict);
   };
 
   const handleSwap = () => {
-    setSelectedCurrencyFrom(selectedCurrencyTo);
-    setSelectedCurrencyTo(selectedCurrencyFrom);
+    setCurrencyFrom(currencyTo);
+    setCurrencyTo(currencyFrom);
   };
 
   const convertCurrency = () => {
-    setOutputValue(inputValue * currencies.data[selectedCurrencyTo]);
+    currencies?.data &&
+      setOutputValue(inputValue * currencies.data[currencyTo]);
   };
 
   useEffect(() => {
@@ -59,21 +58,21 @@ export default function Converter({ data }: IConverterProps) {
       <input
         type="number"
         value={inputValue}
-        onChange={handleInputChange}
+        onChange={handleChange}
       />
       <div>
         <Dropdown
           data={currenciesList}
-          value={selectedCurrencyFrom}
-          handleChange={handleSelectChangeFrom}
+          value={currencyFrom}
+          handleChange={handleChangeCurrencyFrom}
         />
         <button className="button-swap" onClick={handleSwap}>
           Swap
         </button>
         <Dropdown
           data={currenciesList}
-          value={selectedCurrencyTo}
-          handleChange={handleSelectChangeTo}
+          value={currencyTo}
+          handleChange={handleChangeCurrencyTo}
         />
       </div>
       <p className="total">Total:</p>
@@ -81,7 +80,7 @@ export default function Converter({ data }: IConverterProps) {
         : (
           <div className="total-value">
             <p className="value">{Math.round(outputValue * 100) / 100}</p>
-            <p className="value">{currencyDict[selectedCurrencyTo]}</p>
+            <p className="value">{currencyDict[currencyTo]}</p>
           </div>)
       }
       <button onClick={convertCurrency}>Convert</button>
